@@ -27,16 +27,16 @@ To use the parameterization, simply call the function `utils_clean.calc_q()`. An
 `q = utils_clean.calc_q(z, E_keV, z_min, z_max, get_n_H2, interaction_type)`\
 where\
 `z` is a numpy array of altitude (m) over which to calculate the interaction rate *q*\
-`E_keV` is the enery of the incident electron beam (keV)\
+`E_keV` is the energy of the incident electron beam (keV)\
 `z_min` is the lower bound over which to calculate *q* (m)\
 `z_max` is the upper bound over which to calculate *q* (m)\
 `get_n_H2` is a function taking a array of altitude (m) and returning H2 number density (m^-3)\
-`interaction_type` is a string representing which interaction we want the rate for. Options are listed in the function `calc_Nevent_over_N()`. \
+`interaction_type` is a string representing which interaction we want the rate for. Options are listed in the function `calc_Nevent_over_N()`. 
 
 
 We can also calculate a volumetric interaction rate `Q` by simply numerically integrating, \
 $Q(z) = \int q(\varepsilon_0, z) F(\varepsilon_0) d\varepsilon_0$\
-where `F(\varepsilon_0)` is the incident beam energy spectrum. This is done using the function `utils_clean.calc_Q()`. For example\
+where $F(\varepsilon_0)$ is the incident beam energy spectrum. This is done using the function `utils_clean.calc_Q()`. For example\
 \
 `Q = utils.calc_Q(F, z, E_eV, z_min, z_max, get_n_H2, interaction_type)`\
 where\
@@ -46,6 +46,6 @@ where\
 `z_min` is the lower bound over which to calculate *q* (m)\
 `z_max` is the upper bound over which to calculate *q* (m)\
 `get_n_H2` is a function taking a array of altitude (m) and returning H2 number density (m^-3)\
-`interaction_type` is a string representing which interaction we want the rate for. Options are listed in the function `calc_Nevent_over_N()`. \
+`interaction_type` is a string representing which interaction we want the rate for. Options are listed in the function `calc_Nevent_over_N()`. 
 
 
