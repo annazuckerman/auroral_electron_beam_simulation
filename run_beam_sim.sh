@@ -25,8 +25,8 @@ export PYTHONUNBUFFERED=TRUE
 atm_type=T2000_g5.0 # See implemented types in beam_simulation_clean.py
 energies=(500 100 50 10 5 1 0.5 0.1)
 logfile=beam_sim_run.${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out
-sonora_filepath=../../Sonora_data # atmospheric profile output from Picaso/Sonora model, available upon request
-python ../../beam_simulation_clean.py --Ne0 1000 --e0 ${energies[$SLURM_ARRAY_TASK_ID]} --atm_type $atm_type --sonora_filepath $sonora_filepath --d --s --min --logfile $logfile --cos_theta 1
+picaso_filepath=../../Example_Picaso_data # atmospheric profile output from Picaso model, available upon request
+python ../../beam_simulation_clean.py --Ne0 1000 --e0 ${energies[$SLURM_ARRAY_TASK_ID]} --atm_type $atm_type --picaso_filepath $picaso_filepath --d --s --min --logfile $logfile --cos_theta 1
 
 
 
