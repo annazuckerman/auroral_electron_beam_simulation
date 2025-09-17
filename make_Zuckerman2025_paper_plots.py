@@ -31,10 +31,10 @@ k = 1.380649e-23 # bolztman constant [J/k]
 
 # parse input args
 parser = argparse.ArgumentParser(description='')
-parser.add_argument('--sonora_filepath',
-                    dest='sonora_filepath',
+parser.add_argument('--picaso_filepath',
+                    dest='picaso_filepath',
                     type=str,
-                    help='Relative path to Sonora atmospheric profiles.',
+                    help='Relative path to Picaso atmospheric profiles.',
                     required=True)
 parser.add_argument('--filepath_Jupiter_galileo',
                     dest='filepath_Jupiter_galileo',
@@ -242,10 +242,10 @@ if args.fig3:
     z_max = 2200e3
     nbins = 80
     Ne = 1000
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     atm_type = 'Jupiter'
 
-    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
 
     for i in range(len(energies)):
         z_ions = dfs[i].loc['Ionization heights [m]'].dropna()
@@ -299,8 +299,8 @@ if args.fig4:
     atm_type = 'Jupiter'
     npoints = 500
     
-    sonora_filepath = './Sonora_data'
-    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+    picaso_filepath = './Picaso_data'
+    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
     z_grid = np.linspace(0,z_max,100)
     N_grid = utils.construct_R_grid(z_grid, z_min, z_max, get_n_H2)
     
@@ -349,10 +349,10 @@ if args.fig5:
     z_max = 2200e3
     nbins = 60
     Ne = 1000
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
 
     atm_type = 'Jupiter'
-    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
     alpha = 0.65
     E = 10 # keV
 
@@ -422,10 +422,10 @@ if args.fig6:
     nbins = 55
     Ne = 1000
     mH2 = 3.347649043E-27 # H2 mass [kg]
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
 
-    get_n_H2_Jupiter, get_P_H2_Jupiter = utils.construct_profile_Jupiter('Jupiter', z_max_Jupiter, sonora_filepath)
-    get_n_H2_900K_g5, get_P_H2_900K_g5 = utils.construct_profiles('T900_g5.0', z_max_900K_g5, sonora_filepath)
+    get_n_H2_Jupiter, get_P_H2_Jupiter = utils.construct_profile_Jupiter('Jupiter', z_max_Jupiter, picaso_filepath)
+    get_n_H2_900K_g5, get_P_H2_900K_g5 = utils.construct_profiles('T900_g5.0', z_max_900K_g5, picaso_filepath)
     z_grid_Jupiter = np.linspace(z_min_Jupiter, z_max_Jupiter, 1000)
     P_grid_Jupiter = get_P_H2_Jupiter(z_grid_Jupiter) / 1e5
     z_of_P_spline_Jupiter = spline(P_grid_Jupiter[::-1], z_grid_Jupiter[::-1], k=1)
@@ -522,7 +522,7 @@ if args.fig7:
     
     # collect peak locations and undertainties
     Nsigma = 3#1
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     stop_height_pcntle = 0.99 # not used, just to get function to work
     energies = [500.0, 100.0, 50.0, 10.0, 5.0, 1.0, 0.5, 0.1]
     Ntot = 1000
@@ -548,47 +548,47 @@ if args.fig7:
             z_min = 100e3
             RoverR0_min = 1e-6
             RoverR0_max = 5e0
-            get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
             g = 24.79 # m/s^2
         elif atm_type == 'T1400_g4.0':
             z_max = 755.560e3
             z_min = 250e3
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = 250e3
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
         elif atm_type == 'T900_g5.0':
             z_max = 37.612e3
             z_min = 10e3
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = 10e3
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
         elif atm_type == 'T1400_g5.0':
             z_max = 71.970e3
             z_min = 15e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = z_min
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
         elif atm_type == 'T900_g4.0':
             z_max = 398.090e3
             z_min = 140e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = z_min
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
         elif atm_type == 'T482_g4.7':
             z_max = 38.942e3 * 1.2
             z_min =  10e3 #???
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = z_min
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
         elif atm_type == 'T2000_g5.0':
             z_max = 92.236e3
             z_min =  25e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
             plot_zmin = z_min
             RoverR0_min = 1e-6
             RoverR0_max = 1e0
@@ -645,37 +645,37 @@ if args.fig7:
     markers = ['.', '.', 'D',  '.', '.', 'D', 'v']#, 'h']
     markersize = [ms, ms, 0.5*ms, ms, ms, 0.5*ms,0.6*ms]
 
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     for i in range(n_atm_types):
         atm_type = atm_types[i]
         if atm_type == 'Jupiter':
             z_max = 2000e3
             z_min = 100e3
-            get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T1400_g4.0':
             z_max = 755.560e3
             z_min = 250e3
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T900_g5.0':
             z_max = 37.612e3
             z_min = 10e3
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T1400_g5.0':
             z_max = 71.970e3
             z_min = 15e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T900_g4.0':
             z_max = 398.090e3
             z_min = 140e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T482_g4.7':
             z_max = 38.942e3 * 1.2
             z_min =  10e3 #???
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         elif atm_type == 'T2000_g5.0':
             z_max = 92.236e3
             z_min =  25e3 
-            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+            get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
         else:
              raise ValueError('atm_type must be one of implemented profiles.')
         z_peak_mean_arr = z_peak_mean_arr_lists[i]
@@ -864,16 +864,16 @@ if args.fig10:
     atm_type = 'T900_g5.0'
     energies = np.array([500, 100, 50, 10, 5, 1, 0.5, 0.1])
     dfs_900K_g5 = get_files(args.filepath_T900_g5, energies)
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     z_max = 37.612e3 * 1.2
     z_min = 0e3
-    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, picaso_filepath)
     Ne = 1000
     z = np.linspace(z_min, z_max-1, 1000) # m
     nbins = 100
     bins_arr = np.linspace(z_min, z_max, nbins)
     binwidth = bins_arr[1] - bins_arr[0]
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, z_max, picaso_filepath)
     bins_sd_list = []
     kde_curve_medians = []
     kde_curve_sds = []
@@ -904,7 +904,7 @@ if args.fig10:
     Ne = 1000
     kde_z = np.linspace(z_min, z_max, npoints)
     param_z = np.linspace(z_min, z_max, 500)
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
 
     alpha = 0.65
     for i in range(len(energies)):
@@ -960,8 +960,8 @@ if args.fig11:
     nbins = 80
     bins_arr = np.linspace(z_min, z_max, nbins)
     binwidth = bins_arr[1] - bins_arr[0]
-    sonora_filepath = './Sonora_data'
-    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+    picaso_filepath = './Picaso_data'
+    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, picaso_filepath)
     
     # collect values of parameterization loc and value for smoother curve (vs just at simulation energies as used for residuals)
     E_arr = np.logspace(-1,np.log10(500),500)
@@ -1045,7 +1045,7 @@ if args.fig12:
     atm_type = 'Jupiter'
     energies = np.array([500, 100, 50, 10, 5, 1, 0.5, 0.1])
     dfs_900K_g5 = get_files(args.filepath_Jupiter_galileo, energies)
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     z_min = 150e3
     z_max = 2200e3
     Ne = 1000
@@ -1053,7 +1053,7 @@ if args.fig12:
     nbins = 100
     bins_arr = np.linspace(z_min, z_max, nbins)
     binwidth = bins_arr[1] - bins_arr[0]
-    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, z_max, picaso_filepath)
     bins_sd_list = []
     kde_curve_medians = []
     kde_curve_sds = []
@@ -1084,7 +1084,7 @@ if args.fig12:
     Ne = 1000
     kde_z = np.linspace(z_min, z_max, npoints)
     param_z = np.linspace(z_min, z_max, 500)
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
 
     alpha = 0.65
     for i in range(len(energies)):
@@ -1145,10 +1145,10 @@ if args.fig13:
         F =  (A1*F_high_energy(E_eV, 1, e1) + A2*F_high_energy(E_eV, 1, e2) + A3*F_high_energy(E_eV, 1, e3)).to((u.cm**(-2)/ (u.s * u.eV)))
         return F#.to(u.eV**-1 * u.s**-1 * u.m**-2).value # e- / m^2 / s / eV
     atm_type = 'T900_g5.0'
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     z_max = 37.612e3 * 1.2
     z_min = 10e3
-    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, picaso_filepath)
 
     atm_type = 'T900_g5.0'
 
@@ -1241,10 +1241,10 @@ if args.fig14:
         F =  (A1*F_high_energy(E_eV, 1, e1) + A2*F_high_energy(E_eV, 1, e2) + A3*F_high_energy(E_eV, 1, e3)).to((u.cm**(-2)/ (u.s * u.eV)))
         return F#.to(u.eV**-1 * u.s**-1 * u.m**-2).value # e- / m^2 / s / eV
     atm_type = 'T900_g5.0'
-    sonora_filepath = './Sonora_data'
+    picaso_filepath = './Picaso_data'
     z_max = 37.612e3 * 1.2
     z_min = 10e3
-    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, sonora_filepath)
+    get_n_H2, get_pressure = utils.construct_profiles(atm_type, z_max, picaso_filepath)
 
     atm_type = 'T900_g5.0'
 
