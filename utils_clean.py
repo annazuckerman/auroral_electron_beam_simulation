@@ -929,9 +929,9 @@ def get_Hiraki_parameterization_curve(z, z_min, z_max, e0, get_nH2):
     q = (e0/e_ion)*(rho/R0)*lam # #/m
     return q  
 
-def construct_profiles(atm_type, z_max, sonora_filepath):
+def construct_profiles(atm_type, z_max, picaso_filepath):
     '''
-    Read in Sonora model ouputs and construct spline interpolation functions for nH2(z),
+    Read in Picaso model ouputs and construct spline interpolation functions for nH2(z),
     P(z), and z(P). Spline interpolation has been shown to be almost as fast, and
     more accurate, compared with fitting functional forms for these quantities.
     a polynomial fit function for these 
@@ -944,65 +944,65 @@ def construct_profiles(atm_type, z_max, sonora_filepath):
     ''' 
  
     if atm_type == 'Jupiter':
-        T_TOA_sonora = 150.78 # K
+        T_TOA_picaso = 150.78 # K
         g = 24.79 # m/s^2
         R = Rj
         M = g*R**2/G 
         filename = 'jupiter_1e-8_final.pkl'
-        df = pd.read_pickle(sonora_filepath + '/' + filename)
+        df = pd.read_pickle(picaso_filepath + '/' + filename)
     elif atm_type == 'T900_g5.0':
-        T_TOA_sonora = 283.47 # K
+        T_TOA_picaso = 283.47 # K
         g = 1000 # m/s^2
         R = Rj
         M = g*R**2/G
         filename = atm_type+'_nc_moist_0.0metal_NR_smart.atm'
-        df = pd.read_csv(sonora_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
+        df = pd.read_csv(picaso_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
     elif atm_type == 'T1400_g4.0':
-        T_TOA_sonora = 550.72 # K
+        T_TOA_picaso = 550.72 # K
         g = 100 # m/s^2# K
         R = Rj
         M = g*R**2/G
         filename = atm_type+'_nc_moist_0.0metal_NR_smart.atm'
-        df = pd.read_csv(sonora_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
+        df = pd.read_csv(picaso_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
     elif atm_type == 'T900_g4.0':
-        T_TOA_sonora =  263.422216 # K
+        T_TOA_picaso =  263.422216 # K
         g = 100 # m/s^2# K
         R = Rj
         M = g*R**2/G
         filename = atm_type+'_nc_moist_0.0metal_NR_smart.atm'
-        df = pd.read_csv(sonora_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
+        df = pd.read_csv(picaso_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
     elif atm_type == 'T1400_g5.0':
-        T_TOA_sonora = 575.509596 # K
+        T_TOA_picaso = 575.509596 # K
         g = 1000 # m/s^2
         R = Rj
         M = g*R**2/G
         filename = atm_type+'_nc_moist_0.0metal_NR_smart.atm'
-        df = pd.read_csv(sonora_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
+        df = pd.read_csv(picaso_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
     elif atm_type == 'T482_g4.7':
-        T_TOA_sonora = 144.485 # K
+        T_TOA_picaso = 144.485 # K
         g = 501.187 # m/s^2
         R = Rj
         M = g*R**2/G
         filename = 'teff_482_grav_500_mh_+000_co_100_1e-8_df.pkl'
-        df = pd.read_pickle(sonora_filepath + '/' + filename)
+        df = pd.read_pickle(picaso_filepath + '/' + filename)
     elif atm_type == 'T2000_g5.0':        
-        T_TOA_sonora = 717.83 # K
+        T_TOA_picaso = 717.83 # K
         g = 1000 # m/s^2
         R = Rj
         M = g*R**2/G
         filename = 'teff_2000_grav_1000_mh_+000_co_100_1e-8_df.pkl'
-        df = pd.read_pickle(sonora_filepath + '/' + filename)  
+        df = pd.read_pickle(picaso_filepath + '/' + filename)  
     elif atm_type == 'T500_g5.0':
-        T_TOA_sonora = 145.31 # K
+        T_TOA_picaso = 145.31 # K
         g = 1000 # m/s^2
         R = Rj
         M = g*R**2/G
         filename = atm_type+'_nc_moist_0.0metal_NR_smart.atm'
-        df = pd.read_csv(sonora_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
+        df = pd.read_csv(picaso_filepath + '/' + atm_type + '_nc_moist_0.0metal_NR_smart.atm', sep='\s+', skiprows = 0)
     else:
         raise ValueError('atm_type must be one of implemented profiles.')
         
-    # read in Sonora model data
+    # read in Picaso model data
     XH2 = np.array(df['H2']) # H2 mixing ratios
     P = np.array(df['pressure']) * 1e5 # pressure [bar], converted to [Pa]
     T = np.array(df['temperature']) # [K]
@@ -1025,25 +1025,25 @@ def construct_profiles(atm_type, z_max, sonora_filepath):
     Z = Z0 - Z0[idx_P0] # enforce constant of integration
 
     # construct H2 number density
-    nH2_sonora_full = rho_interp * XH2_interp / mu_interp
+    nH2_picaso_full = rho_interp * XH2_interp / mu_interp
     
     # extend isothermally (could also keep this as an analytic function instead of part of the interpolation)
-    P_crit_Pa = (1e-6)*1e5 # 1e-6 bar is approximately where the Sonora model breaks down (transition to isothermal extension)
+    P_crit_Pa = (1e-6)*1e5 # 1e-6 bar is approximately where the Picaso model breaks down (transition to isothermal extension)
     z_crit = Z[np.where(P_interp < P_crit_Pa)[0][-1]]
-    n_crit = nH2_sonora_full[np.where(P_interp < P_crit_Pa)[0][-1]]
-    H0 = k*T_TOA_sonora/(mH2*g) # H at top of sonora
+    n_crit = nH2_picaso_full[np.where(P_interp < P_crit_Pa)[0][-1]]
+    H0 = k*T_TOA_picaso/(mH2*g) # H at top of picaso
     z_isothermal = np.linspace(z_crit, z_max, 100)
     nH2_isothermal = n_crit*np.exp((R**2/H0) * ((z_isothermal + R)**(-1) - (z_crit+R)**(-1)))
-    P_H2_isothermal = nH2_isothermal*T_TOA_sonora*k
+    P_H2_isothermal = nH2_isothermal*T_TOA_picaso*k
     
     # total functions to interpolate
-    z_sonora = Z[Z < z_crit]
-    P_sonora = P_interp[Z < z_crit]
-    nH2_sonora = nH2_sonora_full[Z < z_crit]
-    P_H2_sonora = nH2_sonora_full[Z < z_crit]*T_interp[Z < z_crit]*k
-    z_grid = np.hstack([z_sonora[::-1], z_isothermal])
-    nH2_grid = np.hstack([nH2_sonora[::-1], nH2_isothermal])
-    P_H2_grid = np.hstack([P_H2_sonora[::-1], P_H2_isothermal])
+    z_picaso = Z[Z < z_crit]
+    P_picaso = P_interp[Z < z_crit]
+    nH2_picaso = nH2_picaso_full[Z < z_crit]
+    P_H2_picaso = nH2_picaso_full[Z < z_crit]*T_interp[Z < z_crit]*k
+    z_grid = np.hstack([z_picaso[::-1], z_isothermal])
+    nH2_grid = np.hstack([nH2_picaso[::-1], nH2_isothermal])
+    P_H2_grid = np.hstack([P_H2_picaso[::-1], P_H2_isothermal])
     
     # define "function" (spline interpolation) for ln(nH2(Z))
     ln_nH2 = spline(z_grid, np.log(nH2_grid), k=1)
@@ -1061,9 +1061,9 @@ def construct_profiles(atm_type, z_max, sonora_filepath):
     return get_nH2, get_PH2
 
 
-def construct_profile_Jupiter(atm_type, z_max, sonora_filepath):
+def construct_profile_Jupiter(atm_type, z_max, picaso_filepath):
     '''
-    Read in Sonora model ouputs and construct spline interpolation functions for nH2(z),
+    Read in Picaso model ouputs and construct spline interpolation functions for nH2(z),
     P(z), and z(P). Spline interpolation has been shown to be almost as fast, and
     more accurate, compared with fitting functional forms for these quantities.
     a polynomial fit function for these.
@@ -1079,16 +1079,16 @@ def construct_profile_Jupiter(atm_type, z_max, sonora_filepath):
     ''' 
 
     if atm_type == 'Jupiter':
-        T_TOA_sonora = 150.78 # K
+        T_TOA_picaso = 150.78 # K
         g = 24.79 # m/s^2
         R = Rj
         M = g*R**2/G 
         filename = 'jupiter_1e-8_final.pkl'
-        df = pd.read_pickle(sonora_filepath + '/' + filename)
+        df = pd.read_pickle(picaso_filepath + '/' + filename)
     else:
         raise ValueError('This function is only applicable to Jupiter.')
         
-    # read in Sonora model data
+    # read in Picaso model data
     XH2 = np.array(df['H2']) # H2 mixing ratios
     P = np.array(df['pressure']) * 1e5 # pressure [bar], converted to [Pa]
     T = np.array(df['temperature']) # [K]
@@ -1111,7 +1111,7 @@ def construct_profile_Jupiter(atm_type, z_max, sonora_filepath):
     Z = Z0 - Z0[idx_P0] # enforce constant of integration
 
     # construct H2 number density
-    nH2_sonora_full = rho_interp * XH2_interp / mu_interp
+    nH2_picaso_full = rho_interp * XH2_interp / mu_interp
     
     # Seiff 1998 Galileo data
     chi_H2_Seiff = np.array([0.9828, 0.9866, 0.9886, 0.9886, 0.9846, 0.9716, 0.9300, 0.8890, 0.8673, 0.8621, 0.8620, 0.8620])
@@ -1123,13 +1123,13 @@ def construct_profile_Jupiter(atm_type, z_max, sonora_filepath):
     
     # total functions to interpolate
     z_crit = 20e3
-    z_sonora = Z[Z < z_crit]
-    P_sonora = P_interp[Z < z_crit]
-    nH2_sonora = nH2_sonora_full[Z < z_crit]
-    P_H2_sonora = nH2_sonora_full[Z < z_crit]*T_interp[Z < z_crit]*k
-    z_grid = np.hstack([z_sonora[::-1], z_Seiff[::-1]])
-    nH2_grid = np.hstack([nH2_sonora[::-1], nH2_Seiff[::-1]])
-    P_H2_grid = np.hstack([P_H2_sonora[::-1], P_Seiff[::-1]])
+    z_picaso = Z[Z < z_crit]
+    P_picaso = P_interp[Z < z_crit]
+    nH2_picaso = nH2_picaso_full[Z < z_crit]
+    P_H2_picaso = nH2_picaso_full[Z < z_crit]*T_interp[Z < z_crit]*k
+    z_grid = np.hstack([z_picaso[::-1], z_Seiff[::-1]])
+    nH2_grid = np.hstack([nH2_picaso[::-1], nH2_Seiff[::-1]])
+    P_H2_grid = np.hstack([P_H2_picaso[::-1], P_Seiff[::-1]])
     
     # define "function" (spline interpolation) for ln(nH2(Z))
     ln_nH2 = spline(z_grid, np.log(nH2_grid), k=1)
