@@ -67,10 +67,10 @@ parser.add_argument('--atm_type',
                     type=str,
                     help='Which atmospheric profile to use.',
                     required=True)
-parser.add_argument('--sonora_filepath',
-                    dest='sonora_filepath',
+parser.add_argument('--picaso_filepath',
+                    dest='picaso_filepath',
                     type=str,
-                    help='Relative path to Sonora atmospheric profiles.',
+                    help='Relative path to Picaso atmospheric profiles.',
                     required=True)
 parser.add_argument('--d',
                     dest='diagnostics',
@@ -132,7 +132,7 @@ restore_state = args.restore_state
 minimum_store = args.minimum_store
 vary_theta = args.vary_theta
 logfile = args.logfile
-sonora_filepath = args.sonora_filepath
+picaso_filepath = args.picaso_filepath
 Jup_isothermal = args.Jup_isothermal 
 Jup_H2008 = args.Jup_H2008
 exit_pcnt = args.exit_pcnt
@@ -163,66 +163,66 @@ if atm_type == 'Jupiter':
     g = 24.79 * u.m/u.s**2 # NASA Jupiter fact sheet
     H0 = 2000e3 # [m]  2000 "top" of atmosphere altitude [km], P ~ 10^-13 bars
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 150.78 # [K] T at top of atm from Sonora, 10^-8 bars
+    T = 150.78 # [K] T at top of atm from Picaso, 10^-8 bars
     from utils import rot_excitation_xsec_Jupiter as rot_excitation_xsec
-    if Jup_isothermal: # To use isothermal extension above Sonora model
-        get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    if Jup_isothermal: # To use isothermal extension above Picaso model
+        get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
     elif Jup_H2008: # To use profile from Hiraki and Tao 2008
         get_n_H2 = utils.n_H2_Jupiter_Hiraki 
     else: # using Galileo data by default
-        get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, max_height, sonora_filepath) 
+        get_n_H2, get_P_H2 = utils.construct_profile_Jupiter(atm_type, max_height, picaso_filepath) 
     if uniform_atm_test_run:
         H0 = 0
-        get_n_H2, get_P_H2 = utils.construct_fake_uniform_profile(atm_type, max_height, sonora_filepath)        
+        get_n_H2, get_P_H2 = utils.construct_fake_uniform_profile(atm_type, max_height, picaso_filepath)        
 elif atm_type == 'T1400_g4.0':
     g = 100 * u.m/u.s**2  # log g = 4.0 in cgs 
     H0 = 755.560e3 # [m]  alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 550.72 # [K] T at top of atm from Sonora, 10^-8 bars
+    T = 550.72 # [K] T at top of atm from Picaso, 10^-8 bars
     from utils import rot_excitation_xsec_1400K as rot_excitation_xsec
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T1400_g5.0':
     from utils import rot_excitation_xsec_1400K as rot_excitation_xsec
     g = 1000 * u.m/u.s**2  # log g = 4.0 in cgs 
     H0 =  71.970e3 # [m]  alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 575.509596 # [K] T at top of atm from Sonora, 10^-8 bars
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    T = 575.509596 # [K] T at top of atm from Picaso, 10^-8 bars
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T900_g5.0':
     H0 = 37.612e3 # [m]  alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
     g = 1000 * u.m/u.s**2 # log g = 5.0 in cgs
-    T = 283.47 # [K] T at top of atm from Sonora, 10^-8 bars
+    T = 283.47 # [K] T at top of atm from Picaso, 10^-8 bars
     from utils import rot_excitation_xsec_900K as rot_excitation_xsec
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T900_g4.0':
     from utils import rot_excitation_xsec_900K as rot_excitation_xsec
     g = 100 * u.m/u.s**2 # log g = 5.0 in cgs 
     H0 = 398.090e3 # [m] alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 263.422216 # [K] T at top of atm from Sonora, 10^-8 bars
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    T = 263.422216 # [K] T at top of atm from Picaso, 10^-8 bars
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T482_g4.7':
     from utils import rot_excitation_xsec_482K as rot_excitation_xsec
     g = 501.187 * u.m/u.s**2 # log g = 5.0 in cgs 
     H0 = 37.942e3 # [m] alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 144.485 # [K] T at top of atm from Sonora, 10^-8 bars
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    T = 144.485 # [K] T at top of atm from Picaso, 10^-8 bars
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T2000_g5.0':
     from utils import rot_excitation_xsec_2000K as rot_excitation_xsec
     g = 1000 * u.m/u.s**2 # log g = 5.0 in cgs 
     H0 = 92.236e3 # [m] alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 717.83 # [K] T at top of atm from Sonora, 10^-8 bars
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)
+    T = 717.83 # [K] T at top of atm from Picaso, 10^-8 bars
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)
 elif atm_type == 'T500_g5.0':
     from utils import rot_excitation_xsec_500K as rot_excitation_xsec
     g = 1000 * u.m/u.s**2 # log g = 5.0 in cgs
     H0 = 19.4816e3 # [m] alttiude corresponding to isothermally extended partial pressure of H2 of approx. 1e-13 bar
     max_height = 1.2 * H0 # consider electron to be out of the simulation above this
-    T = 145.31 # [K] T at top of atm from Sonora, 10^-8 bars
-    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, sonora_filepath)    
+    T = 145.31 # [K] T at top of atm from Picaso, 10^-8 bars
+    get_n_H2, get_P_H2 = utils.construct_profiles(atm_type, max_height, picaso_filepath)    
 else:
     print('Specified density profile is not implemented.')
 
